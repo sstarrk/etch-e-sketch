@@ -1,5 +1,6 @@
 const container = document.querySelector("div");
 const sizeButton = document.querySelector("#size");
+let size = 16;
 
 function makeGrid(size) {
     for(let i = 0; i < (size * size); i++) {
@@ -8,34 +9,28 @@ function makeGrid(size) {
         const cellsOnSide = (640 / size);
         cell.style.height = `${cellsOnSide}px`;
         cell.style.width = `${cellsOnSide}px`;
+        cell.addEventListener("mouseover", () => {
+            cell.style.backgroundColor = "#675252";
+        });
         container.appendChild(cell);
     }
 }
-makeGrid(16);
+makeGrid(size);
 
 
-function deleteGrid() {
-    const cellList = document.querySelectorAll(".cell");
-    while (cellList.length !== 0) {
-        const oneCell = document.querySelector(".cell");
-        container.removeChild(oneCell);
+function deleteGrid(size) {
+    for(let i = 0; i < (size * size); i++) {
+        const cell = document.querySelector(".cell");
+        container.removeChild(cell);
     }
 }
 
-sizeButton.addEventListener("click", (sizePrompt));
-
-function sizePrompt() {
-    let size = +prompt("Enter number of squares per side. Limit is 100.");
-    while (userSize > 100 || userSize < 1 || userSize == isNaN ) {
+sizeButton.addEventListener("click", () => {
+    deleteGrid(size);
+    size = +prompt("Enter number of squares per side. Limit is 100.");
+    while (size > 100 || size < 1) {
         size = +prompt("Enter number of squares per side. Limit is 100.");
     }
-    deleteGrid();
-    makeGrid(userSize);
-}
-
-const cells = document.querySelectorAll(".cell");
-cells.forEach((cell) => {
-    cell.addEventListener("mouseover", () => {
-        cell.style.backgroundColor = "#675252";
-    });
+    makeGrid(size);
 });
+
